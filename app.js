@@ -3,7 +3,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const _ = require("lodash");
-const date = require(__dirname +"/date.js")
+const user = require(__dirname + "/pass"); // File for MongoDB id and password
 
 const app = express();
 app.set("view engine", "ejs");
@@ -11,9 +11,13 @@ app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
+// Id Password for mongo db connection
+const id =`${user.db_id()}`;
+const pass = `${user.db_pass()}`;
+
+
 // URL for Mongo DB Atlus
-// %40 is used as @ in password
-let mongo_url = "mongodb+srv://aditya469k:Aditya%40123@cluster0.eqs7a.mongodb.net/todoListDB?retryWrites=true&w=majority";
+let mongo_url = "mongodb+srv://"+id+":"+pass+"@cluster0.eqs7a.mongodb.net/todoListDB?retryWrites=true&w=majority";
 mongoose.connect(mongo_url , {useNewUrlParser: true});
 
 
@@ -142,5 +146,5 @@ if(port == null || port == ""){
 }
 
 app.listen(port, function (req, res) {
-    console.log("Server is running at port 3000");
+    console.log("Server is started Successfully");
 })
